@@ -1,0 +1,49 @@
+{
+  "name": "skills-manager",
+  "version": "0.1.0",
+  "description": "CLI tool for managing agent skills in groups with batch install/remove operations",
+  "type": "module",
+  "main": "dist/cli.js",
+  "bin": {
+    "skills-manager": "./bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "cli",
+    "agent-skills",
+    "skills-manager",
+    "batch-operations",
+    "skills-groups"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/skills-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/skills-manager/issues"
+  },
+  "homepage": "https://github.com/yourusername/skills-manager#readme",
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "commander": "^12.0.0",
+    "picocolors": "^1.1.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
