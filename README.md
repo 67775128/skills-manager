@@ -17,8 +17,34 @@ Skills Manager is a wrapper around [vercel-labs/skills](https://github.com/verce
 
 ## Installation
 
+### Global Install (Recommended)
+
 ```bash
 npm install -g skills-manager
+```
+
+### Local Development Install
+
+For development and testing with local code:
+
+```bash
+git clone <repository-url>
+cd skills-manager
+npm install
+npm run build
+npm link
+```
+
+This creates a global symlink, making `skills-manager` available everywhere. Changes take effect after rebuilding:
+
+```bash
+npm run build  # Rebuild after code changes
+```
+
+To remove the symlink:
+
+```bash
+npm unlink -g skills-manager
 ```
 
 ## Quick Start
