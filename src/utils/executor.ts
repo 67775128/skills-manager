@@ -5,17 +5,20 @@ import * as logger from './logger.js';
 export async function executeSkillsCommand(
   command: string,
   args: string[],
-  options: { verbose?: boolean } = {}
+  options: { verbose?: boolean; interactive?: boolean } = {}
 ): Promise<ExecutorResult> {
   return new Promise((resolve) => {
-    const { verbose = false } = options;
+    const { verbose = false, interactive = false } = options;
     
     if (verbose) {
       logger.step(`Executing: npx skills ${command} ${args.join(' ')}`);
     }
 
+    // Use 'inherit' for interactive mode or verbose mode to allow user interaction
+    const stdio = (interactive || verbose) ? 'inherit' : 'pipe';
+
     const childProcess = spawn('npx', ['skills', command, ...args], {
-      stdio: verbose ? 'inherit' : 'pipe',
+      stdio,
       shell: true,
     });
 
@@ -60,6 +63,7 @@ export async function installSkill(
     agent?: string;
     yes?: boolean;
     verbose?: boolean;
+    interactive?: boolean;
   } = {}
 ): Promise<ExecutorResult> {
   const args: string[] = [source, '--skill', skillName];
@@ -76,7 +80,10 @@ export async function installSkill(
     args.push('--yes');
   }
 
-  return executeSkillsCommand('add', args, { verbose: options.verbose });
+  return executeSkillsCommand('add', args, { 
+    verbose: options.verbose,
+    interactive: options.interactive 
+  });
 }
 
 export async function removeSkill(
@@ -86,6 +93,7 @@ export async function removeSkill(
     agent?: string;
     yes?: boolean;
     verbose?: boolean;
+    interactive?: boolean;
   } = {}
 ): Promise<ExecutorResult> {
   const args: string[] = [skillName];
@@ -102,7 +110,10 @@ export async function removeSkill(
     args.push('--yes');
   }
 
-  return executeSkillsCommand('remove', args, { verbose: options.verbose });
+  return executeSkillsCommand('remove', args, { 
+    verbose: options.verbose,
+    interactive: options.interactive 
+  });
 }
 
 export async function listInstalledSkills(options: {

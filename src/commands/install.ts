@@ -93,8 +93,9 @@ async function installGroup(options: InstallOptions): Promise<void> {
       const result = await executor.installSkill(source, skill.name, {
         global: options.global,
         agent: options.agent,
-        yes: options.yes || true,
-        verbose: false,
+        yes: options.yes,
+        verbose: true,
+        interactive: !options.yes,
       });
 
       if (result.success) {
@@ -142,8 +143,9 @@ async function installSingleSkill(skillName: string, options: InstallOptions): P
   const result = await executor.installSkill(source, skillName, {
     global: options.global,
     agent: options.agent,
-    yes: options.yes || true,
-    verbose: false,
+    yes: options.yes,
+    verbose: true,
+    interactive: !options.yes,
   });
 
   if (!result.success) {

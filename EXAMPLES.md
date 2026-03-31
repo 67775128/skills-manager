@@ -29,6 +29,8 @@ Configuration: /Users/username/.skills-manager/groups.json
 
 ## Basic Usage
 
+> **Note**: All commands preserve the interactive features of `vercel-labs/skills`. You'll see prompts for agent selection, confirmation, and other options unless you use the `-y/--yes` flag.
+
 ### Install a Group
 
 ```bash
@@ -202,12 +204,61 @@ $ skills-manager config delete my-tools
 
 ### Delete Skill from Group Config
 
+**Interactive mode (no arguments):**
+```bash
+$ skills-manager config delete-skill
+
+? Select a group: › 
+  Frontend Development (frontend)
+  Backend Development (backend)
+
+? Select a skill to delete: › 
+  web-design-guidelines
+  tailwind-design-system
+  vercel-react-best-practices
+
+? Delete skill "web-design-guidelines" from group "Frontend Development" (frontend)? (y/N) y
+✓ Deleted skill "web-design-guidelines" from group "frontend"
+ℹ Note: Installed skill is not removed. Use "remove" command to uninstall.
+```
+
+**Direct mode (with arguments):**
 ```bash
 $ skills-manager config delete-skill web-design-guidelines --group frontend
 
 ? Delete skill "web-design-guidelines" from group "Frontend Development" (frontend)? (y/N) y
 ✓ Deleted skill "web-design-guidelines" from group "frontend"
 ℹ Note: Installed skill is not removed. Use "remove" command to uninstall.
+```
+
+## Interactive vs Non-Interactive Mode
+
+### Interactive Mode (Default)
+
+When you don't use `--yes`, the underlying `skills` command will prompt you interactively:
+
+```bash
+$ skills-manager install --group frontend
+
+# You'll see skills CLI prompts like:
+? Select agents to install to: (Press <space> to select, <a> to toggle all)
+❯ ◯ cursor
+  ◯ claude-code
+  ◯ cline
+  
+? Confirm installation? (Y/n)
+```
+
+### Non-Interactive Mode (CI/CD)
+
+Use `--yes` to skip all prompts:
+
+```bash
+# Skip all prompts - for CI/CD environments
+skills-manager install --group frontend --yes
+
+# Also useful for scripting
+skills-manager remove --group frontend --yes
 ```
 
 ## Working with Multiple Agents

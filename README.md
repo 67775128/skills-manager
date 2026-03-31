@@ -13,6 +13,7 @@ Skills Manager is a wrapper around [vercel-labs/skills](https://github.com/verce
 - ⚙️ **Flexible configuration**: Support for multiple sources per group
 - 🔄 **Smart defaults**: Auto-initialize with example configuration
 - 🎯 **Interactive CLI**: User-friendly prompts and confirmations
+- 🔗 **Preserves Skills CLI UX**: Full support for `skills` command's interactive features (agent selection, confirmations, etc.)
 - 💾 **Global configuration**: Single config file shared across projects
 
 ## Installation
@@ -177,6 +178,8 @@ skills-manager remove --group frontend --global --agent cursor
 - `remove --group`: Uninstalls skills but **keeps configuration**
 - `remove skill --group`: Uninstalls skill but **keeps configuration**
 - Use `install --group` to reinstall removed groups
+- **Interactive by default**: Skills CLI prompts are preserved (agent selection, confirmation, etc.)
+- Use `-y/--yes` to skip all prompts for non-interactive/CI environments
 
 ### List & Show
 
@@ -222,7 +225,10 @@ skills-manager config --reset
 # Delete group from config
 skills-manager config delete frontend
 
-# Delete skill from group config
+# Delete skill from group config (interactive)
+skills-manager config delete-skill
+
+# Delete skill from group config (direct)
 skills-manager config delete-skill web-design-guidelines --group frontend
 ```
 

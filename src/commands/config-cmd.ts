@@ -43,11 +43,18 @@ export async function configCommand(
 }
 
 export async function deleteSkillCommand(
-  skillName: string,
-  groupId: string
+  skillName: string | undefined,
+  options: { group?: string } = {}
 ): Promise<void> {
   try {
-    await deleteSkillFromGroup(skillName, groupId);
+    // Interactive mode: no skill name or group provided
+    if (!skillName || !options.group) {
+      await deleteSkillInteractive();
+      return;
+    }
+
+    // Direct mode: both skill name and group provided
+    await deleteSkillFromGroup(skillName, options.group);
   } catch (error) {
     logger.error(error instanceof Error ? error.message : String(error));
     process.exit(1);
@@ -71,11 +78,12 @@ async function showConfigInfo(): Promise<void> {
 
   console.log();
   logger.info('Commands:');
-  logger.dim('  skills-manager config --edit                        Open in editor');
-  logger.dim('  skills-manager config --validate                    Validate format');
-  logger.dim('  skills-manager config --reset                       Reset to defaults');
-  logger.dim('  skills-manager config delete <group>                Delete group from config');
-  logger.dim('  skills-manager config delete-skill <skill> --group  Delete skill from group config');
+  logger.dim('  skills-manager config --edit                    Open in editor');
+  logger.dim('  skills-manager config --validate                Validate format');
+  logger.dim('  skills-manager config --reset                   Reset to defaults');
+  logger.dim('  skills-manager config delete <group>            Delete group from config');
+  logger.dim('  skills-manager config delete-skill              Interactive: delete skill from group');
+  logger.dim('  skills-manager config delete-skill <skill> -g   Direct: delete skill from group');
 }
 
 async function openInEditor(configPath: string): Promise<void> {
@@ -174,6 +182,72 @@ async function deleteGroups(groupIds: string): Promise<void> {
     await config.deleteGroup(groupId);
     logger.success(`Deleted group "${groupId}" from configuration`);
     logger.info('Note: Installed skills are not removed. Use "remove --group" to uninstall.');
+  }
+}
+
+async function deleteSkillInteractive(): Promise<void> {
+  const configuration = await config.loadConfig();
+  const groupIds = Object.keys(configuration.groups);
+
+  if (groupIds.length === 0) {
+    logger.info('No groups configured');
+    return;
+  }
+
+  // Step 1: Select group
+  const groupId = await prompts.select({
+    message: 'Select a group:',
+    options: groupIds.map((id) => ({
+      value: id,
+      label: `${configuration.groups[id].name} (${id})`,
+    })),
+  });
+
+  if (prompts.isCancel(groupId)) {
+    prompts.cancel('Operation cancelled');
+    return;
+  }
+
+  const group = configuration.groups[String(groupId)];
+  const skills = config.resolveSkills(group);
+
+  if (skills.length === 0) {
+    logger.info(`No skills in group "${groupId}"`);
+    return;
+  }
+
+  // Step 2: Select skill
+  const skillName = await prompts.select({
+    message: 'Select a skill to delete:',
+    options: skills.map((skill) => ({
+      value: skill.name,
+      label: skill.name,
+    })),
+  });
+
+  if (prompts.isCancel(skillName)) {
+    prompts.cancel('Operation cancelled');
+    return;
+  }
+
+  // Step 3: Confirm deletion
+  const confirm = await prompts.confirm({
+    message: `Delete skill "${String(skillName)}" from group "${group.name}" (${groupId})?`,
+    initialValue: false,
+  });
+
+  if (prompts.isCancel(confirm) || !confirm) {
+    logger.info('Operation cancelled');
+    return;
+  }
+
+  try {
+    await config.removeSkillFromGroup(String(groupId), String(skillName));
+    logger.success(`Deleted skill "${String(skillName)}" from group "${groupId}"`);
+    logger.info('Note: Installed skill is not removed. Use "remove" command to uninstall.');
+  } catch (error) {
+    logger.error(error instanceof Error ? error.message : String(error));
+    process.exit(1);
   }
 }
 

@@ -29,6 +29,8 @@ backend (Backend Development)
 
 ## 基本用法
 
+> **注意**：所有命令都保留了 `vercel-labs/skills` 的交互式功能。除非使用 `-y/--yes` 参数，否则你会看到代理选择、确认等提示。
+
 ### 安装分组
 
 ```bash
@@ -202,12 +204,61 @@ $ skills-manager config delete my-tools
 
 ### 从分组配置中删除技能
 
+**交互式模式（无参数）：**
+```bash
+$ skills-manager config delete-skill
+
+? 选择一个分组: › 
+  Frontend Development (frontend)
+  Backend Development (backend)
+
+? 选择要删除的技能: › 
+  web-design-guidelines
+  tailwind-design-system
+  vercel-react-best-practices
+
+? 从分组 "Frontend Development" (frontend) 中删除技能 "web-design-guidelines"？(y/N) y
+✓ 已从分组 "frontend" 中删除技能 "web-design-guidelines"
+ℹ 注意: 已安装的技能未移除。请使用 "remove" 命令卸载。
+```
+
+**直接模式（带参数）：**
 ```bash
 $ skills-manager config delete-skill web-design-guidelines --group frontend
 
 ? 从分组 "Frontend Development" (frontend) 中删除技能 "web-design-guidelines"？(y/N) y
 ✓ 已从分组 "frontend" 中删除技能 "web-design-guidelines"
 ℹ 注意: 已安装的技能未移除。请使用 "remove" 命令卸载。
+```
+
+## 交互式 vs 非交互式模式
+
+### 交互式模式（默认）
+
+当不使用 `--yes` 时，底层的 `skills` 命令会进行交互式提示：
+
+```bash
+$ skills-manager install --group frontend
+
+# 你会看到 skills CLI 的提示，例如：
+? Select agents to install to: (Press <space> to select, <a> to toggle all)
+❯ ◯ cursor
+  ◯ claude-code
+  ◯ cline
+  
+? Confirm installation? (Y/n)
+```
+
+### 非交互式模式（CI/CD）
+
+使用 `--yes` 跳过所有提示：
+
+```bash
+# 跳过所有提示 - 适用于 CI/CD 环境
+skills-manager install --group frontend --yes
+
+# 也适用于脚本
+skills-manager remove --group frontend --yes
 ```
 
 ## 多代理操作

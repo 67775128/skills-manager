@@ -66,7 +66,9 @@ async function removeGroup(options: RemoveOptions): Promise<void> {
       const result = await executor.removeSkill(skill.name, {
         global: options.global,
         agent: options.agent,
-        yes: options.yes || true,
+        yes: options.yes,
+        verbose: true,
+        interactive: !options.yes,
       });
 
       if (result.success) {
@@ -101,7 +103,9 @@ async function removeSingleSkill(skillName: string, options: RemoveOptions): Pro
   const result = await executor.removeSkill(skillName, {
     global: options.global,
     agent: options.agent,
-    yes: options.yes || true,
+    yes: options.yes,
+    verbose: true,
+    interactive: !options.yes,
   });
 
   if (!result.success) {

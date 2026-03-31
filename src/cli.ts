@@ -84,11 +84,11 @@ configCmd
 
 // Config delete-skill subcommand
 configCmd
-  .command('delete-skill <skill-name>')
-  .description('Delete skill from group configuration')
-  .requiredOption('-g, --group <group>', 'Group ID to delete skill from')
+  .command('delete-skill [skill-name]')
+  .description('Delete skill from group configuration (interactive if no args)')
+  .option('-g, --group <group>', 'Group ID to delete skill from')
   .action((skillName, options) => {
-    deleteSkillCommand(skillName, options.group);
+    deleteSkillCommand(skillName, options);
   });
 
 // Sync command
