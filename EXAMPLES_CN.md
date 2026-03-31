@@ -33,8 +33,32 @@ backend (Backend Development)
 
 ### 安装分组
 
+**交互式选择（默认）：**
+
 ```bash
 $ skills-manager install --group frontend
+
+正在安装分组: Frontend Development
+
+? 从 "Frontend Development" 选择要安装的技能: (按 <空格> 选择, <回车> 确认)
+❯ ◉ web-design-guidelines (vercel-labs/agent-skills)
+  ◉ tailwind-design-system (vercel-labs/agent-skills)
+  ◉ vercel-react-best-practices (vercel-labs/agent-skills)
+
+→ 正在从 vercel-labs/agent-skills 安装 web-design-guidelines...
+✓ 已安装 web-design-guidelines
+→ 正在从 vercel-labs/agent-skills 安装 tailwind-design-system...
+✓ 已安装 tailwind-design-system
+→ 正在从 vercel-labs/agent-skills 安装 vercel-react-best-practices...
+✓ 已安装 vercel-react-best-practices
+
+ℹ 分组 "frontend": 3 个成功, 0 个失败
+```
+
+**使用 --yes 跳过选择：**
+
+```bash
+$ skills-manager install --group frontend --yes
 
 正在安装分组: Frontend Development
 
@@ -73,8 +97,33 @@ Frontend Development (frontend)
 
 ### 移除分组
 
+**交互式选择（默认）：**
+
 ```bash
 $ skills-manager remove --group frontend
+
+正在移除分组: Frontend Development
+
+? 从 "Frontend Development" 中选择要移除的技能: (按 <空格> 选择, <回车> 确认)
+❯ ◉ web-design-guidelines (vercel-labs/agent-skills)
+  ◉ tailwind-design-system (vercel-labs/agent-skills)
+  ◉ vercel-react-best-practices (vercel-labs/agent-skills)
+
+→ 正在移除 web-design-guidelines...
+✓ 已移除 web-design-guidelines
+→ 正在移除 tailwind-design-system...
+✓ 已移除 tailwind-design-system
+→ 正在移除 vercel-react-best-practices...
+✓ 已移除 vercel-react-best-practices
+
+ℹ 分组 "frontend": 3 个已移除, 0 个失败
+ℹ 配置已保留。使用 "install --group" 重新安装。
+```
+
+**使用 --yes 跳过选择：**
+
+```bash
+$ skills-manager remove --group frontend --yes
 
 正在移除分组: Frontend Development
 

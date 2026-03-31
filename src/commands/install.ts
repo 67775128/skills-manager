@@ -83,10 +83,39 @@ async function installGroup(options: InstallOptions): Promise<void> {
     const skills = config.resolveSkills(group);
     const sourceOverride = options.source;
 
+    // Interactive skill selection (unless --yes is used)
+    let selectedSkills = skills;
+    if (!options.yes) {
+      const selected = await prompts.multiselect({
+        message: `Select skills to install from "${group.name}":`,
+        options: skills.map((skill) => ({
+          value: skill.name,
+          label: skill.name,
+          hint: skill.source,
+        })),
+        initialValues: skills.map(s => s.name), // Default: all selected
+        required: false,
+      });
+
+      if (prompts.isCancel(selected)) {
+        logger.info('Installation cancelled');
+        continue;
+      }
+
+      selectedSkills = skills.filter(s => 
+        (selected as string[]).includes(s.name)
+      );
+
+      if (selectedSkills.length === 0) {
+        logger.info('No skills selected');
+        continue;
+      }
+    }
+
     let successCount = 0;
     let failCount = 0;
 
-    for (const skill of skills) {
+    for (const skill of selectedSkills) {
       const source = sourceOverride || skill.source;
       logger.step(`Installing ${skill.name} from ${source}...`);
 

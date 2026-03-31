@@ -155,6 +155,12 @@ skills-manager install --group frontend --global --agent cursor
 - If group doesn't exist, prompts to create it interactively
 - Single skill installs also add to config (with confirmation)
 
+**Interactive Mode:**
+- By default, shows a multi-select list to choose which skills to install
+- Use arrow keys to navigate, space to select/deselect, enter to confirm
+- All skills are selected by default for convenience
+- Use `--yes` to skip selection and install all skills in the group
+
 ### Remove
 
 ```bash
@@ -180,6 +186,12 @@ skills-manager remove --group frontend --global --agent cursor
 - Use `install --group` to reinstall removed groups
 - **Interactive by default**: Skills CLI prompts are preserved (agent selection, confirmation, etc.)
 - Use `-y/--yes` to skip all prompts for non-interactive/CI environments
+
+**Interactive Mode:**
+- By default, shows a multi-select list to choose which skills to remove
+- Use arrow keys to navigate, space to select/deselect, enter to confirm
+- All skills are selected by default for convenience
+- Use `--yes` to skip selection and remove all skills in the group
 
 ### List & Show
 

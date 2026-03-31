@@ -33,8 +33,32 @@ Configuration: /Users/username/.skills-manager/groups.json
 
 ### Install a Group
 
+**Interactive selection (default):**
+
 ```bash
 $ skills-manager install --group frontend
+
+Installing group: Frontend Development
+
+? Select skills to install from "Frontend Development": (Press <space> to select, <enter> to confirm)
+❯ ◉ web-design-guidelines (vercel-labs/agent-skills)
+  ◉ tailwind-design-system (vercel-labs/agent-skills)
+  ◉ vercel-react-best-practices (vercel-labs/agent-skills)
+
+→ Installing web-design-guidelines from vercel-labs/agent-skills...
+✓ Installed web-design-guidelines
+→ Installing tailwind-design-system from vercel-labs/agent-skills...
+✓ Installed tailwind-design-system
+→ Installing vercel-react-best-practices from vercel-labs/agent-skills...
+✓ Installed vercel-react-best-practices
+
+ℹ Group "frontend": 3 succeeded, 0 failed
+```
+
+**Skip selection with --yes:**
+
+```bash
+$ skills-manager install --group frontend --yes
 
 Installing group: Frontend Development
 
@@ -73,8 +97,33 @@ Skills:
 
 ### Remove a Group
 
+**Interactive selection (default):**
+
 ```bash
 $ skills-manager remove --group frontend
+
+Removing group: Frontend Development
+
+? Select skills to remove from "Frontend Development": (Press <space> to select, <enter> to confirm)
+❯ ◉ web-design-guidelines (vercel-labs/agent-skills)
+  ◉ tailwind-design-system (vercel-labs/agent-skills)
+  ◉ vercel-react-best-practices (vercel-labs/agent-skills)
+
+→ Removing web-design-guidelines...
+✓ Removed web-design-guidelines
+→ Removing tailwind-design-system...
+✓ Removed tailwind-design-system
+→ Removing vercel-react-best-practices...
+✓ Removed vercel-react-best-practices
+
+ℹ Group "frontend": 3 removed, 0 failed
+ℹ Configuration kept. Use "install --group" to reinstall.
+```
+
+**Skip selection with --yes:**
+
+```bash
+$ skills-manager remove --group frontend --yes
 
 Removing group: Frontend Development
 
