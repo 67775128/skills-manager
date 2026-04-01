@@ -16,7 +16,6 @@ const DEFAULT_CONFIG: Config = {
       source: 'vercel-labs/agent-skills',
       skills: [
         'web-design-guidelines',
-        'tailwind-design-system',
         'vercel-react-best-practices',
       ],
     },
